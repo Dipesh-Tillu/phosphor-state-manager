@@ -88,9 +88,17 @@ retrieve_bundle()
 	run_target "cd $OBJECT_DIR && find . -name '*.gcda' -print | tar cvfz - -T -" >$tarball_name
 }
 
-# Report who we are and what we do.
+# Banner to report who we are and what we do.
 echo
 echo "Welcome to the coverage data collection driver program."
+echo "This is a demonstratino of the OpenBMC coverage toolkit."
+echo
+echo "Use: sh setup-ssh.sh"
+echo "  when using a freshly build image from bitbake"
+echo
+echo "Use: sh make-coverage-archive.sh"
+echo "  after collecting the coverage data to produce the coverage"
+echo "  compressed data file archive"
 echo
 
 # Ensure we are in the phosphor-state-manager source folder.
@@ -109,13 +117,13 @@ check_for_file $BUILD_DIR qemu-system-arm
 # Report all path names that are in use.
 
 echo "The folder where openbmc git repository is:"
-echo OPENBMC_DIR=$OPENBMC_DIR
+echo "OPENBMC_DIR='$OPENBMC_DIR'"
 echo "The folder where the project repository is:"
-echo SOURCE_DIR=$SOURCE_DIR
+echo "SOURCE_DIR='$SOURCE_DIR'"
 echo "The folder where the Yocto build outputs are located:"
-echo OBJECT_DIR=$OBJECT_DIR
+echo "OBJECT_DIR='$OBJECT_DIR'"
 echo "The folder where data coverage data is persisted:"
-echo BUILD_DIR=$BUILD_DIR
+echo "BUILD_DIR='$BUILD_DIR'"
 echo "The folder where the romulus target is located within the openbmc folder:"
-echo DATA_DIR=$DATA_DIR
+echo "DATA_DIR='$DATA_DIR'"
 echo "The folder where the romulus target is located within the openbmc folder:"
