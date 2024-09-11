@@ -6,7 +6,7 @@ BUILD_DIR=$OPENBMC_DIR/build/romulus
 SOURCE_DIR=$BUILD_DIR/workspace/sources/phosphor-state-manager
 OBJECT_DIR=$BUILD_DIR/tmp/work/arm1176jzs-openbmc-linux-gnueabi/phosphor-state-manager/1.0+git/phosphor-state-manager-1.0+git
 RUNTIME_DIR=/tmp/coverage
-DATA_DIR=data
+DATA_DIR=`pwd`/data
 
 # Configure data collection test run.
 TESTS="test_systemd_parser test_systemd_signal test_scheduled_host_transition test_hypervisor_state"
@@ -88,3 +88,34 @@ retrieve_bundle()
 	run_target "cd $OBJECT_DIR && find . -name '*.gcda' -print | tar cvfz - -T -" >$tarball_name
 }
 
+# Report who we are and what we do.
+echo
+echo "Welcome to the coverage data collection driver program."
+echo
+
+# Ensure we are in the phosphor-state-manager source folder.
+check_for_file . bmc_state_manager.cpp
+if [ `run_target pwd` != /home/root ]; then
+	echo "ssh to target not working" >&2
+	exit 1
+fi
+
+# Make sure all folders are present and accounted for.
+check_for_file $OPENBMC_DIR setup
+check_for_file $SOURCE_DIR bmc_state_manager.cpp
+check_for_file $OBJECT_DIR test_systemd_parser
+check_for_file $BUILD_DIR qemu-system-arm
+
+# Report all path names that are in use.
+
+echo "The folder where openbmc git repository is:"
+echo OPENBMC_DIR=$OPENBMC_DIR
+echo "The folder where the project repository is:"
+echo SOURCE_DIR=$SOURCE_DIR
+echo "The folder where the Yocto build outputs are located:"
+echo OBJECT_DIR=$OBJECT_DIR
+echo "The folder where data coverage data is persisted:"
+echo BUILD_DIR=$BUILD_DIR
+echo "The folder where the romulus target is located within the openbmc folder:"
+echo DATA_DIR=$DATA_DIR
+echo "The folder where the romulus target is located within the openbmc folder:"
