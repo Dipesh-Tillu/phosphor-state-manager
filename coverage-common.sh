@@ -100,6 +100,7 @@ echo "Use: sh make-coverage-archive.sh"
 echo "  after collecting the coverage data to produce the coverage"
 echo "  compressed data file archive"
 echo
+echo
 
 # Ensure we are in the phosphor-state-manager source folder.
 check_for_file . bmc_state_manager.cpp
@@ -122,8 +123,7 @@ echo "The folder where the project repository is:"
 echo "SOURCE_DIR='$SOURCE_DIR'"
 echo "The folder where the Yocto build outputs are located:"
 echo "OBJECT_DIR='$OBJECT_DIR'"
-echo "The folder where data coverage data is persisted:"
+echo "The folder where the romulus target is located within the openbmc folder:"
 echo "BUILD_DIR='$BUILD_DIR'"
-echo "The folder where the romulus target is located within the openbmc folder:"
+echo "The folder where data coverage data is persisted:"
 echo "DATA_DIR='$DATA_DIR'"
-echo "The folder where the romulus target is located within the openbmc folder:"
