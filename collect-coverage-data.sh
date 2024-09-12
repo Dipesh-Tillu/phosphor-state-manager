@@ -5,6 +5,9 @@
 # Configure the pathnames and tests.
 . ./coverage-common.sh
 
+# Ensure passwordless SSH is working.
+check_ssh
+
 # Remove all previous test data on the target.
 run_target "sh -c 'rm -rf $RUNTIME_DIR && mkdir -p $RUNTIME_DIR'"
 
