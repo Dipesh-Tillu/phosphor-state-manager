@@ -21,6 +21,12 @@ for test_name in $TESTS; do
 	fi
 done
 
+# Choose gcov destination folder.
+gcov_dir="$BUNDLE_DIR/gcov"
+
+# Clear out any gcov folder (in the bundle folder).
+rm -rf "$gcov_dir" && mkdir -p "$gcov_dir"
+
 for test_name in $TESTS; do
 
 	# Show banner for this test.
@@ -49,12 +55,28 @@ for test_name in $TESTS; do
 		sed 's/\.gcda$/.gcno/' |
 		xargs -ti cp -v "$OBJECT_DIR/{}" "$suite_dir/{}"
 
-	# Create a unified JSON file (older version of GCC) for the suite.
-	(cd "$suite_dir" && find . -name '*.gcda' | xargs -t $GCOV_DIR/gcov -j -m -t) >"$suite_dir.json"
+	# Choose the folder inside the gcov folder for this test.
+	gcov_test_dir="$gcov_dir/$test_name"
 
-	# Clear and test suite directory entirely (all GCDA and GCNO files).
+	# Clear and recreate gcov test folder.
+	rm -rf "$gcov_test_dir" && mkdir -p "$gcov_test_dir"
+
+	# Create a unified JSON file (older version of GCC) for the suite.
+	(cd "$suite_dir" && find . -name '*.gcda' |
+		xargs -t $GCOV_DIR/gcov -j -m)
+
+	# Move the compressed JSON files into the final gcov test directory.
+	mv "$suite_dir"/*.json.gz "$gcov_test_dir"
+
+	# Delete included files (very large).
+	rm "$gcov_test_dir"/_*.json.gz
+
+	# Unzip the rest (because we will be compressing the tarball).
+	gunzip "$gcov_test_dir"/*.json.gz
+
+	# Clear the renamed suite directory entirely (all GCDA and GCNO files).
 	echo "Deleting the GCDA/GCNO files leaving only JSON."
-	rm -rf "$suite_dir"
+	rm -rf "$suite_dir-tmp"
 
 done
 
