@@ -20,7 +20,7 @@ for test_name in $TESTS; do
 	flush_coverage
 
 	# Run one "group" of gtest tests.
-	run_test "$test_name
+	run_test "$test_name"
 
 	# Choose an archive name.
 	archive_name="$test_name-gcda"

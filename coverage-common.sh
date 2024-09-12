@@ -16,7 +16,10 @@ BUNDLE_DIR="$DATA_DIR/bundle"
 TESTS="test_systemd_parser test_systemd_signal test_scheduled_host_transition test_hypervisor_state"
 
 check_ssh() {
-	if [ "`run_target pwd </dev/null >/dev/null 2>&1`" != /home/root ]; then
+	
+	# Capture only the stdout of the remote program, should it succeed.
+	target_output=`run_target pwd </dev/null 2>/dev/null`
+	if [ "$target_output" != "/home/root" ]; then
 		echo "ssh to target not working: is the emulator running?" >&2
 		exit 1
 	fi
