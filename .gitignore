@@ -6,3 +6,4 @@ data/
 *.out
 obmc-phosphor-image-romulus.static.mtd
 qemu-system-arm
+phosphor-state-manager-diffs.txt
