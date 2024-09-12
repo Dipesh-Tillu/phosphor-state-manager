@@ -74,8 +74,8 @@ run_test() {
 
 	# Note: we could use GCOV environment variables to control the runtime location of the GCDA files.
 	test_name=$1
-	copy_target $OBJECT_DIR/$test_name $RUNTIME_DIR
-	run_target $RUNTIME_DIR/$test_name
+	copy_target "$OBJECT_DIR/$test_names" "$RUNTIME_DIR"
+	run_target "$RUNTIME_DIR/$test_name"
 }
 
 # Flush the GCOV data on the target.
@@ -123,6 +123,13 @@ echo
 echo "Use: sh make-coverage-archive.sh"
 echo "  after collecting the coverage data to produce the coverage"
 echo "  compressed data file archive"
+echo
+echo "Use: sh run-mmx.sh"
+echo "  after making the coverage archive to produce the"
+echo "  traceability matrix using the Orion matrix-mapper"
+echo
+echo "Use: sh list-scripts.sh"
+echo "  Refresh memory of available scripts"
 echo
 echo
 
