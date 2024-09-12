@@ -3,8 +3,26 @@
 # Configure the pathnames and tests.
 . ./coverage-common.sh
 
+# Choose the bundle folder.
+bundle_folder="$DATA_DIR/bundle"
+
 # Clear the entire bundle folder.
-rm -rf "$DATA_DIR/bundle" && mkdir -p "$DATA_DIR/bundle"
+rm -rf "$bundle_folder" && mkdir -p "$bundle_folder"
+
+for test_name in $TESTS; do
+
+	# Choose the GCDA archive input file.
+	gcda_archive="$DATA_DIR/work/$test_name.tar.gz"
+
+	# Choose test suite destination folder.
+	suite_dir="$bundle_folder/$test_name"
+
+	# Fail if the required test files are not present.
+	if [ ! -f "$gcda_archive" ]; then
+		echo "Missing test suite GCDA bundle, expected in work folder $test_name.tar.gz" >&2
+		exit 1
+	fi
+done
 
 for test_name in $TESTS; do
 
@@ -13,17 +31,33 @@ for test_name in $TESTS; do
 	echo "Merging coverage data for test: '$test_name'"
 	echo
 
-	# Choose destination.
-	dest_dir="$DATA_DIR/bundle/$test_name"
+	# Choose the GCDA archive input file.
+	gcda_archive="$DATA_DIR/work/$test_name.tar.gz"
 
-	# Clear and recreate destination directory."
-	rm -rf "$dest_dir" && mkdir -p "$dest_dir"
+	# Choose test suite destination folder.
+	suite_dir="$bundle_folder/$test_name"
+
+	# Clear and recreate test suite directory.
+	rm -rf "$suite_dir" && mkdir -p "$suite_dir"
 
 	# Unpack runtime coverage artifacts collected during testing.
-	tar xvfz - -C "$dest_dir" <"$DATA_DIR/work/$test_name.tar.gz"
+	tar xvfz - -C "$suite_dir" <"$gcda_archive"
 
 	# Copy the corresponding GCNO file for each GCDA file.
-	(cd "$dest_dir" && find -name '*.gcda') |
+	(cd "$suite_dir" && find -name '*.gcda') |
 		sed 's/\.gcda$/.gcno/' |
-		xargs -ti cp -v "$OBJECT_DIR/{}" "$dest_dir/{}"
+		xargs -ti cp -v "$OBJECT_DIR/{}" "$suite_dir/{}"
+
+	# Choose the coverage data bundle archive.
+	archive_file="$DATA_DIR/bundle.tar.gz"
+
+	tar cvfz "$bundle_folder" "$archive_file"
+
+	# Clear out the work folder to tidy up.
+	rm -rf "$suite_dir"
+
+	echo "Deleting the now processed GCDA file."
+	rm -f "$DATA_DIR/work
+
+	
 done

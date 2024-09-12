@@ -93,8 +93,15 @@ echo
 echo "Welcome to the coverage data collection driver program."
 echo "This is a demonstratino of the OpenBMC coverage toolkit."
 echo
+echo
+echo "Use: . coverage-common.sh"
+echo "  use this in the shell to get direct access to the variables we display"
+echo
 echo "Use: sh setup-ssh.sh"
 echo "  when using a freshly build image from bitbake"
+echo
+echo "Use: sh collect-coverage-data.sh"
+echo "  to collect the runtime coverage data (the GCDA files)"
 echo
 echo "Use: sh make-coverage-archive.sh"
 echo "  after collecting the coverage data to produce the coverage"
@@ -127,3 +134,4 @@ echo "The folder where the romulus target is located within the openbmc folder:"
 echo "BUILD_DIR='$BUILD_DIR'"
 echo "The folder where data coverage data is persisted:"
 echo "DATA_DIR='$DATA_DIR'"
+echo
