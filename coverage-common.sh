@@ -9,6 +9,7 @@ RUNTIME_DIR=/tmp/coverage
 DATA_DIR=`pwd`/data
 ORION_DIR=$BUILD_DIR/workspace/sources/orion-c-cpp/build
 GCOV_DIR=$BUILD_DIR/tmp/sysroots-components/x86_64/gcc-stashed-builddir-arm-openbmc-linux-gnueabi/gcc
+BUNDLE_DIR="$DATA_DIR/bundle"
 
 
 # Configure data collection test run.
@@ -150,6 +151,8 @@ echo "The folder where data coverage data is persisted:"
 echo "DATA_DIR='$DATA_DIR'"
 echo "The folder where the Orion project is located:"
 echo "ORION_DIR='$ORION_DIR'"
-echo "The folder where the the cross-compiled 'gcov' program is located:"
+echo "The folder where the cross-compiled 'gcov' program is located:"
 echo "GCOV_DIR='$GCOV_DIR'"
+echo "The output folder for the bundle:"
+echo "BUNDLE_DIR='$BUNDLE_DIR'"
 echo
