@@ -3,5 +3,5 @@
 
 . ./coverage-common.sh
 
-#"$ORION_DIR/mmx/oriccpp-mmx" "$@"
+echo "Running: $ORION_DIR/mmx/oriccpp-mmx" "$@"
 strace -f -o matrix-mapper.out "$ORION_DIR/mmx/oriccpp-mmx" "$@"
