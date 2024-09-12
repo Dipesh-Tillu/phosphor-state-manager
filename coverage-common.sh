@@ -8,6 +8,8 @@ OBJECT_DIR=$BUILD_DIR/tmp/work/arm1176jzs-openbmc-linux-gnueabi/phosphor-state-m
 RUNTIME_DIR=/tmp/coverage
 DATA_DIR=`pwd`/data
 ORION_DIR=$BUILD_DIR/workspace/sources/orion-c-cpp/build
+GCOV_DIR=$BUILD_DIR/tmp/sysroots-components/x86_64/gcc-stashed-builddir-arm-openbmc-linux-gnueabi/gcc
+
 
 # Configure data collection test run.
 TESTS="test_systemd_parser test_systemd_signal test_scheduled_host_transition test_hypervisor_state"
@@ -41,7 +43,13 @@ run_target() {
 	fi
 	echo "Running command on target: $@" >&2
 	ssh -p 2222 root@localhost "$@"
+}
 
+# Run the specified command on the target.
+shell_target() {
+
+	echo "Running command on target: $@" >&2
+	ssh -p 2222 root@localhost "$@"
 }
 
 # Copy the specified test to the target's runtime folder.
@@ -126,6 +134,7 @@ check_for_file $SOURCE_DIR bmc_state_manager.cpp
 check_for_file $OBJECT_DIR test_systemd_parser
 check_for_file $BUILD_DIR qemu-system-arm
 check_for_file $ORION_DIR mmx/oriccpp-mmx
+check_for_file $GCOV_DIR gcov
 
 # Report all path names that are in use.
 
@@ -141,4 +150,6 @@ echo "The folder where data coverage data is persisted:"
 echo "DATA_DIR='$DATA_DIR'"
 echo "The folder where the Orion project is located:"
 echo "ORION_DIR='$ORION_DIR'"
+echo "The folder where the the cross-compiled 'gcov' program is located:"
+echo "GCOV_DIR='$GCOV_DIR'"
 echo

@@ -4,3 +4,5 @@ subprojects/*
 .vscode/
 data/
 *.out
+obmc-phosphor-image-romulus.static.mtd
+qemu-system-arm
