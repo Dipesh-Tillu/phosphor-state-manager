@@ -5,36 +5,32 @@
 # Configure the pathnames and tests.
 . setup.sh
 
-# Ensure we are in the phosphor-state-manager source folder.
-check_for_file . bmc_state_manager.cpp
-if [ `run_target pwd` != /home/root ]; then
-	echo "ssh to target not working" >&2
-	exit 1
-fi
-
-# Make sure all folders are present and accounted for.
-check_for_file $OPENBMC_DIR setup
-check_for_file $SOURCE_DIR bmc_state_manager.cpp
-check_for_file $OBJECT_DIR test_systemd_parser
-check_for_file $BUILD_DIR qemu-system-arm
-
 # Remove all previous test data on the target.
 run_target "sh -c 'rm -rf $RUNTIME_DIR && mkdir -p $RUNTIME_DIR'"
 
 # Remove all the old tmp data folder and recreate it.
 rm -rf $DATA_DIR/tmp && mkdir -p $DATA_DIR/tmp
 
-for test_name in $TESTS; do
+# Choose test to run.
+if [ $# -ne 1]; then
+	echo "usage: sh run-test.sh <test-name>" >&2
+	echo "  e.g." >&2
+	for i in $TESTS; do
+		echo "  sh run-tests.sh $test_name" >&2
+	done
+	exit 1
+fi
 
-	# Flush the coverage data on the target.
-	flush_coverage
+test_name="$1"
 
-	# Run one "group" of gtest tests.
-	run_test $test_name
+# Flush the coverage data on the target.
+flush_coverage
 
-	# Choose an archive name.
-	archive_name=$test_name
+# Run one "group" of gtest tests.
+run_test $test_name
 
-	# Create GCDA bundle.
-	retrieve_bundle $DATA_DIR/tmp/$archive_name.tar.gz
-done
+# Choose an archive name.
+archive_name=$test_name
+
+# Create GCDA bundle.
+retrieve_bundle $DATA_DIR/tmp/$archive_name.tar.gz
