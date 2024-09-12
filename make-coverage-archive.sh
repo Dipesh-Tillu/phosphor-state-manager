@@ -48,16 +48,15 @@ for test_name in $TESTS; do
 		sed 's/\.gcda$/.gcno/' |
 		xargs -ti cp -v "$OBJECT_DIR/{}" "$suite_dir/{}"
 
-	# Choose the coverage data bundle archive.
-	archive_file="$DATA_DIR/bundle.tar.gz"
-
-	tar cvfz "$bundle_folder" "$archive_file"
-
-	# Clear out the work folder to tidy up.
-	rm -rf "$suite_dir"
-
 	echo "Deleting the now processed GCDA file."
-	rm -f "$DATA_DIR/work
-
-	
+	rm -f "$gcda_archive"
 done
+
+# Clear out the work folder to tidy up.
+rm -rf "$DATA_DIR/work" && mkdir -p "$DATA_DIR/work"
+
+# Choose the coverage data bundle archive.
+archive_file="$DATA_DIR/bundle.tar.gz"
+
+# Tarball up the archive.
+(cd "$bundle_folder" && tar cvfz "$archive_file" .)
