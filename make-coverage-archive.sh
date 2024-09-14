@@ -63,7 +63,7 @@ for test_name in $TESTS; do
 
 	# Create a unified JSON file (older version of GCC) for the suite.
 	(cd "$suite_dir" && find . -name '*.gcda' |
-		xargs -t $GCOV_DIR/gcov -j -m)
+		xargs -t $GCOV_DIR/gcov -j -m >/dev/null)
 
 	# Move the compressed JSON files into the final gcov test directory.
 	mv "$suite_dir"/*.json.gz "$gcov_test_dir"
