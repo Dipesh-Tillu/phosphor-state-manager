@@ -54,7 +54,7 @@ TEST(TargetJsonParser, BasicGoodPath)
 
     TargetErrorData targetData = parseFiles(filePaths);
 
-    EXPECT_EQ(targetData.size(), 4);
+    EXPECT_EQ(targetData.size(), (unsigned)4);
     EXPECT_NE(targetData.find("multi-user.target"), targetData.end());
     EXPECT_NE(targetData.find("obmc-chassis-poweron@0.target"),
               targetData.end());
@@ -63,10 +63,10 @@ TEST(TargetJsonParser, BasicGoodPath)
     targetEntry tgt = targetData["obmc-chassis-poweron@0.target"];
     EXPECT_EQ(tgt.errorToLog,
               "xyz.openbmc_project.State.Chassis.Error.PowerOnTargetFailure");
-    EXPECT_EQ(tgt.errorsToMonitor.size(), 2);
+    EXPECT_EQ(tgt.errorsToMonitor.size(), (unsigned)2);
     // Check a target with "default" for errorsToMonitor, should have 3 defaults
     tgt = targetData["obmc-host-start@0.target"];
-    EXPECT_EQ(tgt.errorsToMonitor.size(), 3);
+    EXPECT_EQ(tgt.errorsToMonitor.size(), (unsigned)3);
 
     std::remove("/tmp/good_file1.json");
     std::remove("/tmp/good_file2.json");
